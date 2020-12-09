@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,12 +18,12 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Dimensions,
-} from 'react-native';
+} from "react-native";
 
-import MovementSettings from './MovementSettings';
+import MovementSettings from "./MovementSettings";
 
-import disabledImg from './images/btn-disabled.png';
-import enabledImg from './images/btn-enabled.png';
+import disabledImg from "./images/btn-disabled.png";
+import enabledImg from "./images/btn-enabled.png";
 
 const Movement = () => {
   const [speed, setSpeed] = useState(40);
@@ -35,94 +35,94 @@ const Movement = () => {
   const [hitsInRow, setHitsInRow] = useState(0);
   const [currentBallPosition, setCurrentBallPosition] = useState(0);
   const [currentBallPositionIndex, setCurrentBallPositionIndex] = useState(0);
-
   const [userGuess, setUserGuess] = useState(null);
   const [currentStatus, setCurrentStatus] = useState(null);
-  const [isQuizTimerActive, setIsQuizTimerActive] = useState(false);
+  const [isRoundTimerActive, setIsRoundTimerActive] = useState(false);
   const [roundStarted, setRoundStarted] = useState(false);
   const [currentPitch, setCurrentPitch] = useState(0);
+  const [currentDisplayedPitch, setCurrentDisplayedPitch] = useState(0);
   const [currentPitchCount, setCurrentPitchCount] = useState(0);
   const [thrownCount, setThrownCount] = useState(0);
-  const [pitches, setPitches] = useState(0);
-  const [pitchTotal, setPitchTotal] = useState(20);
+  const [pitches, setPitches] = useState([]);
+  const [pitchTotal, setPitchTotal] = useState(30);
   const [ballIsReady, setBallIsReady] = useState(true);
   const [answerCorrect, setAnswerCorrect] = useState(null);
 
-  const Profiles = [
+  const BallImages = [
     {
       id: 1,
-      src: require('./images/ball1.png'),
+      src: require("./images/ball1.png"),
     },
     {
       id: 2,
-      src: require('./images/ball2.png'),
+      src: require("./images/ball2.png"),
     },
     {
       id: 3,
-      src: require('./images/ball3.png'),
+      src: require("./images/ball3.png"),
     },
     {
       id: 4,
-      src: require('./images/ball4.png'),
+      src: require("./images/ball4.png"),
     },
     {
       id: 5,
-      src: require('./images/ball5.png'),
+      src: require("./images/ball5.png"),
     },
     {
       id: 6,
-      src: require('./images/ball6.png'),
+      src: require("./images/ball6.png"),
     },
     {
       id: 7,
-      src: require('./images/ball7.png'),
+      src: require("./images/ball7.png"),
     },
     {
       id: 8,
-      src: require('./images/ball8.png'),
+      src: require("./images/ball8.png"),
     },
     {
       id: 9,
-      src: require('./images/ball9.png'),
+      src: require("./images/ball9.png"),
     },
     {
       id: 10,
-      src: require('./images/ball10.png'),
+      src: require("./images/ball10.png"),
     },
     {
       id: 11,
-      src: require('./images/ball11.png'),
+      src: require("./images/ball11.png"),
     },
     {
       id: 12,
-      src: require('./images/ball12.png'),
+      src: require("./images/ball12.png"),
     },
     {
       id: 13,
-      src: require('./images/ball13.png'),
+      src: require("./images/ball13.png"),
     },
     {
       id: 14,
-      src: require('./images/ball14.png'),
+      src: require("./images/ball14.png"),
     },
     {
       id: 15,
-      src: require('./images/ball15.png'),
+      src: require("./images/ball15.png"),
     },
     {
       id: 16,
-      src: require('./images/ball16.png'),
+      src: require("./images/ball16.png"),
     },
     {
       id: 17,
-      src: require('./images/ball17.png'),
+      src: require("./images/ball17.png"),
     },
   ];
 
-  const [ballPositions, setBallPositions] = useState([
-    Dimensions.get('screen').width * 0.1,
-    Dimensions.get('screen').width * 0.45,
-    Dimensions.get('screen').width * 0.8,
+  const [ballPositions] = useState([
+    Dimensions.get("screen").width * 0.1,
+    Dimensions.get("screen").width * 0.45,
+    Dimensions.get("screen").width * 0.8,
   ]);
 
   //quiz timer
@@ -130,30 +130,30 @@ const Movement = () => {
   useEffect(() => {
     let interval = null;
 
-    if (isQuizTimerActive) {
+    if (isRoundTimerActive) {
       //console.log('start quiz timer');
       interval = setInterval(() => {
-        //console.log('the seconds: ' + quizTime);
-
         moveBall();
-        // var thrownCount1 = thrownCount + 1;
-        // setThrownCount(thrownCount1);
       }, convSpeed);
-    } else if (!isQuizTimerActive) {
+    } else if (!isRoundTimerActive) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isQuizTimerActive, thrownCount]);
+  }, [isRoundTimerActive, thrownCount]);
 
   useEffect(() => {
-    console.log('updated thrown count: ' + thrownCount);
+    //console.log("updated thrown count: " + thrownCount);
 
+    var upd = pitches[thrownCount] - 1;
+    setCurrentDisplayedPitch(BallImages[upd]);
+
+    console.log("set new pitch index: " + pitches[thrownCount]);
+  }, [thrownCount]);
+
+  useEffect(() => {
     var ind = currentBallPositionIndex;
-    //console.log('update position: ' + ind);
 
-    setCurrentPitch(pitches[thrownCount]);
-
-    console.log('set new pitch index: ' + pitches[thrownCount]);
+    //console.log("cdp: " + JSON.stringify(currentDisplayedPitch));
 
     if (!isMoving) {
       return;
@@ -168,29 +168,22 @@ const Movement = () => {
       //console.log('new ind: ' + newInd);
       setCurrentBallPositionIndex(newInd);
     }
-  }, [thrownCount]);
+  }, [currentDisplayedPitch]);
 
   useEffect(() => {
-    console.log('currentPitch: ' + currentPitch);
-  }, [currentPitch]);
-
-  useEffect(() => {
-    console.log(
-      'currentBallPositionIndex change: ' +
-        ballPositions[currentBallPositionIndex],
-    );
+    console
+      .log
+      //"currentBallPositionIndex change: " + ballPositions[currentBallPositionIndex]
+      ();
 
     setCurrentBallPosition(ballPositions[currentBallPositionIndex]);
   }, [currentBallPositionIndex]);
 
   const moveBall = () => {
-    //console.log('ind: ' + ind);
-    //console.log('moveBall thrownCount: ' + thrownCount);
-
     setBallIsReady(true);
 
     if (thrownCount == pitchTotal - 1) {
-      setIsQuizTimerActive(false);
+      setIsRoundTimerActive(false);
       //setIsMoving(false);
 
       setTimeout(() => {
@@ -204,13 +197,13 @@ const Movement = () => {
   };
 
   useEffect(() => {
-    //console.log('convSpeed: ' + convSpeed);
+    console.log("convSpeed: " + convSpeed);
   }, [convSpeed]);
 
   //did mount
 
   useEffect(() => {
-    console.log('did mount');
+    console.log("did mount");
 
     console.clear();
 
@@ -219,6 +212,9 @@ const Movement = () => {
     setHitsInRow(0);
     setHits(0);
     setCurrentBallPosition(ballPositions[1]);
+    setIsGuessing(false);
+    setUserGuess(null);
+    //setBallIsReady(false);
 
     generateBallNumbers();
   }, []);
@@ -229,16 +225,15 @@ const Movement = () => {
     () => () => {
       //console.log('unmount');
     },
-    [],
+    []
   );
 
   const startRound = () => {
-    //setCurrentBallIndex(0);
-    setThrownCount(0);
-    setCurrentBallPosition(ballPositions[1]);
-    setCurrentBallPositionIndex(0);
+    console.log("start round");
 
-    console.log('go');
+    setThrownCount(0);
+    setCurrentBallPosition(ballPositions[0]);
+    setCurrentBallPositionIndex(0);
 
     setAnswerCorrect(null);
     setRoundStarted(true);
@@ -246,7 +241,8 @@ const Movement = () => {
     setBallIsReady(false);
 
     setTimeout(() => {
-      setIsQuizTimerActive(true);
+      setBallIsReady(true);
+      setIsRoundTimerActive(true);
     }, 1000);
   };
 
@@ -259,6 +255,7 @@ const Movement = () => {
   };
 
   const chooseSpeed = (speed1) => {
+    console.log("chooseSpeed: " + speed1);
     if (speed1 == 40) {
       setConvSpeed(1000);
     } else if (speed1 == 50) {
@@ -286,7 +283,7 @@ const Movement = () => {
     var min = max / 10; // Math.pow(10, n) basically
     var number = Math.floor(Math.random() * (max - min + 1)) + min;
 
-    return ('' + number).substring(add);
+    return ("" + number).substring(add);
   };
 
   const getRandomInt = (min, max, exclude) => {
@@ -324,7 +321,7 @@ const Movement = () => {
   intervalId = null;
 
   const generateBallNumbers = () => {
-    var currentPitch1 = getRandomInt(0, 15);
+    var currentPitch1 = getRandomInt(1, 15);
     var currentPitchCount1 = getRandomInt(5, 10);
     var pitches1 = [];
 
@@ -340,7 +337,7 @@ const Movement = () => {
     var remainingCount = pitchTotal - currentPitchCount1;
 
     for (var i = 0; i < remainingCount; i++) {
-      var randomPitch = getRandomInt(0, 15);
+      var randomPitch = getRandomInt(1, 15);
       pitches1.push(randomPitch);
     }
 
@@ -348,49 +345,52 @@ const Movement = () => {
 
     pitches1 = shuffle(pitches1);
 
-    console.log('\ncurrentPitch: ' + currentPitch1);
-    console.log('currentPitchCount: ' + currentPitchCount1);
-    console.log('pitches: ' + pitches1);
-    console.log('count: ' + pitches1.length);
+    console.log("\ncurrentPitch: " + currentPitch1);
+    console.log("currentPitchCount: " + currentPitchCount1);
+    console.log("pitches: " + pitches1);
+    //console.log("count: " + pitches1.length);
     console.log(
-      'percentage of pitches: ' +
+      "percentage of pitches: " +
         parseInt((currentPitchCount1 / pitchTotal) * 100) +
-        '%',
+        "%"
     );
 
-    //setCurrentBallIndex(currentPitch1);
+    var upd = pitches1[0] - 1;
+
+    console.log("setCurrentDisplayedPitch: " + upd);
 
     setCurrentPitch(currentPitch1);
+    setCurrentDisplayedPitch(BallImages[upd]);
     setCurrentPitchCount(currentPitchCount1);
     setPitches(pitches1);
   };
 
   const submitGuess = () => {
-    console.log('currentPitchCount: ' + currentPitchCount);
-    console.log('userGuess: ' + userGuess);
+    console.log("currentPitchCount: " + currentPitchCount);
+    console.log("userGuess: " + userGuess);
 
     var hits1 = hits;
     var hitsInRow1 = hitsInRow;
 
     if (currentPitchCount == userGuess) {
-      console.log('correct');
+      console.log("correct");
 
       hits1 = hits + 1;
       hitsInRow1 = hits + 1;
 
-      setCurrentStatus('CORRECT');
+      setCurrentStatus("CORRECT");
       setAnswerCorrect(true);
     } else {
-      console.log('incorrect');
+      console.log("incorrect");
       hitsInRow1 = 0;
 
-      setCurrentStatus('INCORRECT');
+      setCurrentStatus("INCORRECT");
       setAnswerCorrect(false);
     }
 
     var atBats1 = atBats + 1;
 
-    console.log('atBats: ' + atBats1);
+    console.log("atBats: " + atBats1);
 
     setIsGuessing(false);
     setUserGuess(null);
@@ -398,27 +398,37 @@ const Movement = () => {
     setHitsInRow(hitsInRow1);
     setHits(hits1);
     setRoundStarted(false);
+    setPitches([]);
 
+    setThrownCount(0);
     generateBallNumbers();
   };
 
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
+      <SafeAreaView />
+      <View
+        style={{
+          height: "100%",
+          backgroundColor: "white",
+          justifyContent: "center",
+        }}
+      >
         {isMoving ? (
           <View
             style={{
               //backgroundColor: 'yellow',
-              height: '100%',
-            }}>
+              height: "100%",
+            }}
+          >
             <Image
-              source={Profiles[currentPitch - 1].src}
+              source={currentDisplayedPitch.src}
               style={[
                 styles.ballMove,
                 {
-                  position: 'absolute',
-                  top: '40%',
+                  position: "absolute",
+                  top: "40%",
                   left: currentBallPosition,
                   right: 0,
                   bottom: 0,
@@ -426,8 +436,6 @@ const Movement = () => {
                 },
               ]}
             />
-
-            {/* {balls} */}
           </View>
         ) : !isGuessing && currentPitch ? (
           <MovementSettings
@@ -441,11 +449,12 @@ const Movement = () => {
             hits={hits}
             atBats={atBats}
             hitsInRow={hitsInRow}
-            Profiles={Profiles}
+            BallImages={BallImages}
           />
         ) : (
           <KeyboardAvoidingView
-            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+          >
             <View style={styles.guessView}>
               <View style={styles.guessCenterContent}>
                 <Text style={styles.instructionsTxt3}>
@@ -454,17 +463,21 @@ const Movement = () => {
                 <TextInput
                   style={styles.inputTxt2}
                   onChangeText={(text) => userInput(text)}
-                  value={userGuess}></TextInput>
+                  value={userGuess}
+                  keyboardType="number-pad"
+                ></TextInput>
                 <TouchableOpacity
                   onPress={() => submitGuess()}
-                  style={styles.startBtn}>
+                  style={styles.startBtn}
+                >
                   <Text
                     style={{
-                      color: 'white',
-                      textAlign: 'center',
+                      color: "white",
+                      textAlign: "center",
                       fontSize: 20,
-                      fontWeight: 'bold',
-                    }}>
+                      fontWeight: "bold",
+                    }}
+                  >
                     SUBMIT
                   </Text>
                 </TouchableOpacity>
@@ -472,110 +485,94 @@ const Movement = () => {
             </View>
           </KeyboardAvoidingView>
         )}
-      </SafeAreaView>
+      </View>
     </>
   );
 };
+
+const { height, width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   ball: {
     width: 75,
     height: 75,
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    marginLeft: "auto",
+    marginRight: "auto",
     marginTop: 15,
     marginBottom: 15,
   },
   ballMove: {
-    width: 75,
-    height: 75,
+    // width: 75,
+    // height: 75,
+    width: height > 450 ? 150 : 75,
+    height: height > 450 ? 150 : 75,
   },
-  leftContent: {
-    flex: 0.4,
-    //backgroundColor: 'red'
-  },
-  rightContent: {
-    flex: 0.2,
-    //backgroundColor: 'yellow',
-  },
+
   centerContent: {
     flex: 2,
     //backgroundColor: 'green',
   },
   scrollView: {},
   startBtn: {
-    backgroundColor: '#7FBF30',
+    backgroundColor: "#7FBF30",
     width: 250,
     height: 40,
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    marginLeft: "auto",
+    marginRight: "auto",
     padding: 8,
     marginTop: 10,
   },
   guessView: {
     //backgroundColor: 'yellow',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
   },
   inputTxt: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     height: 50,
     width: 250,
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    marginLeft: "auto",
+    marginRight: "auto",
     marginTop: 20,
     marginBottom: 20,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderWidth: 1,
-    color: 'black',
-    textAlign: 'center',
+    color: "black",
+    textAlign: "center",
     fontSize: 25,
   },
   inputTxt2: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     height: 50,
     width: 250,
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    marginLeft: "auto",
+    marginRight: "auto",
     marginTop: 10,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     //borderWidth: 1,
     borderBottomWidth: 1,
-    color: 'black',
-    textAlign: 'center',
+    color: "black",
+    textAlign: "center",
     fontSize: 25,
   },
   instructionsTxt: {
     fontSize: 25,
     marginBottom: 10,
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
   },
-  instructionsTxt2: {fontSize: 20, marginBottom: 20, textAlign: 'center'},
-  instructionsTxt3: {fontSize: 20, textAlign: 'center'},
+  instructionsTxt3: { fontSize: 20, textAlign: "center" },
 
-  btnItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-    minWidth: 50,
-    maxWidth: 70,
-    alignItems: 'center',
-  },
   resultsTxt: {
     fontSize: 15,
     marginBottom: 10,
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
   },
   guessCenterContent: {
     //backgroundColor: 'red',
   },
-  basicText: {fontSize: 15, marginBottom: 10, textAlign: 'center'},
-  basicText2: {fontSize: 15, textAlign: 'center'},
-  btnText: {fontSize: 15},
-  btnHeader: {fontSize: 18},
 });
 
 export default Movement;

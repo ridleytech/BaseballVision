@@ -66,7 +66,7 @@
 		02BE1DED11AE0618800A2809 /* Pods-BaseballVision-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseballVision-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-BaseballVision-tvOSTests/Pods-BaseballVision-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		07B4435327DBA99D2331F7BB /* Pods-BaseballVision.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseballVision.release.xcconfig"; path = "Target Support Files/Pods-BaseballVision/Pods-BaseballVision.release.xcconfig"; sourceTree = "<group>"; };
 		0A76E8F0B569492AA07A04BE /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* BaseballVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaseballVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Baseball Vision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Baseball Vision.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = BaseballVision/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = BaseballVision/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = BaseballVision/Images.xcassets; sourceTree = "<group>"; };
@@ -239,7 +239,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* BaseballVision.app */,
+				13B07F961A680F5B00A75B9A /* Baseball Vision.app */,
 				00E356EE1AD99517003FC87E /* BaseballVisionTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* BaseballVision-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* BaseballVision-tvOSTests.xctest */,
@@ -303,7 +303,7 @@
 			);
 			name = BaseballVision;
 			productName = BaseballVision;
-			productReference = 13B07F961A680F5B00A75B9A /* BaseballVision.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Baseball Vision.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D02E47A1E0B4A5D006451C7 /* BaseballVision-tvOS */ = {
@@ -750,13 +750,14 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BaseballVision/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ridleytech.BaseballVision;
-				PRODUCT_NAME = BaseballVision;
+				PRODUCT_NAME = "Baseball Vision";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -773,13 +774,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = BaseballVision/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ridleytech.BaseballVision;
-				PRODUCT_NAME = BaseballVision;
+				PRODUCT_NAME = "Baseball Vision";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
